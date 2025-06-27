@@ -39,7 +39,7 @@ def load_dataset():
 
         return data['input'], data['label']
     else:
-        return np.empty((0,280,230)), np.empty((0,3))
+        return np.empty((0,140,115)), np.empty((0,3)) # TODO adjust to image size
 
 
 def save_dataset(input, label):

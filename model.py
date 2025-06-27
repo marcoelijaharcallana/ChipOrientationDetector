@@ -10,13 +10,8 @@ training_input, training_label = load_dataset()
 
 model = keras.Sequential(
     [
-        keras.layers.InputLayer((280, 230, 1), batch_size = None), 
-        keras.layers.Convolution2D(3, (3,3), activation = keras.activations.leaky_relu),
-        keras.layers.MaxPool2D((2,2)),
-        keras.layers.Convolution2D(3, (5,5), activation = keras.activations.leaky_relu),
-        keras.layers.MaxPool2D((3,3)), 
-        keras.layers.Convolution2D(3, (7,7), activation = keras.activations.leaky_relu),
-        keras.layers.MaxPool2D((4,4)),
+        keras.layers.InputLayer((140, 115, 1), batch_size = None), 
+        keras.layers.Convolution2D(3, (3,3), activation = keras.activations.leaky_relu, strides = (1,1)),
         keras.layers.Flatten(),
         keras.layers.Dense(3, keras.activations.leaky_relu),
         keras.layers.Dense(3, keras.activations.leaky_relu),
@@ -25,6 +20,6 @@ model = keras.Sequential(
 )
 
 model.compile("adam", keras.losses.CategoricalCrossentropy(False), metrics=["accuracy"]) 
-model.fit(training_input, training_label, epochs=100)
+model.fit(training_input, training_label, epochs=50)
 
 model.save("model.keras")

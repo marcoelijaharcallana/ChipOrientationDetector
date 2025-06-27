@@ -8,8 +8,6 @@ camera = cv.VideoCapture(0)
 settings = load_settings()
 mode = "NOT SET"
 
-ps, nn, fl = 0,0,0
-
 while camera.isOpened():
     image = get_image_from_camera_gray(camera)
 
@@ -19,20 +17,11 @@ while camera.isOpened():
     if key == Key.Q:
         break 
     elif key == Key.Z:
-        if check_guide_image(image, settings):
-            training_input = np.concatenate((training_input, [main_image / 255.0]))
-            training_label = np.concatenate((training_label ,[[1,0,0]]))  
-            ps += 1 
+        mode = "PASS"
     elif key == Key.X:
-        if check_guide_image(image, settings):
-            training_input = np.concatenate((training_input, [main_image / 255.0]))
-            training_label = np.concatenate((training_label ,[[0,1,0]]))  
-        fl += 1
+        mode = "FAIL"
     elif key == Key.C:        
-        if check_guide_image(image, settings):
-            training_input = np.concatenate((training_input, [main_image / 255.0]))
-            training_label = np.concatenate((training_label ,[[0,0,1]]))  
-            nn += 1
+        mode = "NONE"
     elif key == Key.S: 
         save_dataset(training_input, training_label)
 
@@ -47,10 +36,21 @@ while camera.isOpened():
     else:
         mode = "NOT SET"
 
+
+    if check_guide_image(image, settings):
+        if mode == "PASS":
+            training_input = np.concatenate((training_input, [main_image / 255.0]))
+            training_label = np.concatenate((training_label ,[[1,0,0]]))            
+        elif mode == "FAIL":
+            training_input = np.concatenate((training_input, [main_image / 255.0]))
+            training_label = np.concatenate((training_label ,[[0,1,0]]))            
+        elif mode == "NONE":
+            training_input = np.concatenate((training_input, [main_image / 255.0]))
+            training_label = np.concatenate((training_label ,[[0,0,1]]))            
+
     image = split_channel(image)
     image = add_overlay(image, settings)
-
-    image = cv.putText(image, f"Pass: {ps} Fail: {fl} None: {nn}", (100,100), cv.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0), 1)
+    image = cv.putText(image, f"Mode: {mode}", (100,100), cv.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 1)
 
     cv.imshow("Gather Data", image)
     cv.imshow("Main Image", main_image)

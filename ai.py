@@ -29,6 +29,8 @@ while camera.isOpened():
         main_image = main_image / 255.0
         output = model(np.array([main_image]))[0].detach().cpu().numpy()
 
+        print(output)
+
         highest, index = 0,0
         for i in range(3):
             if output[i] > highest:
