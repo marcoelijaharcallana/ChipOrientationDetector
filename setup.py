@@ -131,4 +131,4 @@ while True:
         settings['threshold'] -= 1
 
 # Save JSON 
-save_settings(settings)
+save_settings(bundleName, settings)
