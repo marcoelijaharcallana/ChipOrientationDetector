@@ -1,10 +1,1 @@
-{
-    "guide": {
-        "x": 200,
-        "y": 200,
-        "radius": 5
-    },
-    "main": {
-        "x": 
-    }
-}
+{"guide": {"position": [255, 29], "radius": 20, "color": [255, 0, 0]}, "main": {"position": [200, 150], "dimension": [115, 140], "color": [255, 0, 0]}, "threshold": 240}

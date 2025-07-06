@@ -7,6 +7,16 @@ import numpy as np
 import os 
 import sys 
 
+
+def setup_directory(name): 
+    if not os.path.exists("./bundles"):
+        os.mkdir("./bundles")
+    
+    path = f"./bundles/{name}"
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+
 # Gray to BGR Wrapper
 def split_channel(image):
     return cv.cvtColor(image, cv.COLOR_GRAY2BGR)
@@ -33,7 +43,8 @@ def get_image_from_camera_gray(camera):
     return cv.cvtColor(get_image_from_camera(camera), cv.COLOR_BGR2GRAY)
 
 
-def load_dataset(path, settings):
+def load_dataset(bundleName, settings):
+    path = f"./bundles/{bundleName}/data.npz"
     if os.path.exists(path):
         data = np.load(path)
 
@@ -42,7 +53,8 @@ def load_dataset(path, settings):
         return np.empty((0,settings['main']['dimension'][1],settings['main']['dimension'][0])), np.empty((0,3)) # TODO adjust to image size
 
 
-def save_dataset(input, label, path):
+def save_dataset(input, label, bundleName):
+    path = f"./bundles/{bundleName}/data.npz"
     np.savez(path, input=input, label=label)
 
 def crop_image_pp(image, p1, p2):
@@ -98,6 +110,7 @@ def get_guide_image_convolved_brightness(image, settings):
     return mx
 
 def check_guide_image(image, settings):
+    # return True # FOR DEBUGGING
     brightness = get_guide_image_convolved_brightness(image, settings)
     return brightness > settings["threshold"]
 
@@ -110,8 +123,16 @@ def get_camera_resolution(camera):
     return img[:,:,0].shape
 
 # Load Settings JSON and Perform Sanity Checks 
-def load_settings():
-    fp = open("settings.json")
+def load_settings(name):
+    path = f"bundles/{name}/settings.json"
+    if not os.path.exists(path):
+        tf = open("./template.json")
+        of = open(path, "w")
+        json.dump(json.load(tf), of)
+        of.close()
+        tf.close()
+
+    fp = open(path)
     settings = json.load(fp)
     fp.close()
     
@@ -126,8 +147,8 @@ def load_settings():
     return settings 
 
 
-def save_settings(settings):
-    fp = open('settings.json', 'w')
+def save_settings(name, settings):
+    fp = open(f"bundles/{name}/settings.json", 'w')
     json.dump(settings, fp)
     fp.close()
 
@@ -136,7 +157,7 @@ def add_overlay(img, settings):
     guide_radius = settings['guide']['radius']
     guide_color = settings['guide']['color']
 
-    img = cv.circle(img, guide_position, guide_radius, guide_color, 1)
+    img = cv.circle(img, guide_position, guide_radius, guide_color, 2)
 
     main_position = settings['main']['position']
     main_dimension = settings['main']['dimension']
@@ -144,6 +165,6 @@ def add_overlay(img, settings):
     main_width = main_dimension[0]
     main_height = main_dimension[1]
 
-    img = cv.rectangle(img, (main_position[0], main_position[1], main_width, main_height), main_color, 1)  
+    img = cv.rectangle(img, (main_position[0], main_position[1], main_width, main_height), main_color, 2)  
 
     return img 

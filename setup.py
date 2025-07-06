@@ -3,7 +3,15 @@ import json
 from helper import * 
 from definitions import * 
 
-settings = load_settings()
+import argparse 
+
+parser = argparse.ArgumentParser("calibrate")
+parser.add_argument("bundleName")
+bundleName = parser.parse_args().bundleName
+setup_directory(bundleName)
+
+
+settings = load_settings(bundleName)
 
 camera = cv.VideoCapture(0)
 height, width = get_camera_resolution(camera)

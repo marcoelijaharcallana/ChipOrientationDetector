@@ -4,3 +4,4 @@ training_data_backup.npz
 main.qml
 model-conv.keras 
 model.keras 
+bundles/*

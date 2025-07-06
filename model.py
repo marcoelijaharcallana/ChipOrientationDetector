@@ -7,15 +7,15 @@ from helper import *
 from definitions import * 
 import argparse
 
-parser = argparse.ArgumentParser("Model") 
-parser.add_argument("trainingFile")
-parser.add_argument("ai")
-arguments = parser.parse_args()
 
-settings = load_settings()
+parser = argparse.ArgumentParser("Model") 
+parser.add_argument("bundleName")
+bundleName = parser.parse_args().bundleName
+
+settings = load_settings(bundleName)
 width, height = settings['main']['dimension'][0], settings['main']['dimension'][1]
 
-training_input, training_label = load_dataset(arguments.trainingFile, settings)
+training_input, training_label = load_dataset(bundleName, settings)
 
 model = keras.Sequential(
     [
@@ -31,4 +31,4 @@ model = keras.Sequential(
 model.compile("adam", keras.losses.CategoricalCrossentropy(False), metrics=["accuracy"]) 
 model.fit(training_input, training_label, epochs=50)
 
-model.save(arguments.ai)
+model.save(f"./bundles/{bundleName}/model.keras")

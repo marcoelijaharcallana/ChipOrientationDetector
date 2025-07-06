@@ -4,13 +4,12 @@ from helper import *
 import argparse 
 
 parser = argparse.ArgumentParser("Gather")
-parser.add_argument("trainingFile")
-arguments = parser.parse_args()
-
+parser.add_argument("bundleName")
+bundleName = parser.parse_args().bundleName
 
 camera = cv.VideoCapture(0) 
-settings = load_settings()
-training_input, training_label = load_dataset(arguments.trainingFile, settings)
+settings = load_settings(bundleName)
+training_input, training_label = load_dataset(bundleName, settings)
 backup_training_input, backup_training_label = training_input, training_label 
 
 mode = "NOT SET"
@@ -41,7 +40,7 @@ while camera.isOpened():
             training_label = np.concatenate((training_label ,[[0,0,1]]))  
             nn += 1
     elif key == Key.S: 
-        save_dataset(arguments.trainingFile, training_input, training_label)
+        save_dataset(training_input, training_label, bundleName)
 
         print("ADDED ", training_label.shape[0] - backup_training_label.shape[0]) 
         backup_trainng_input, backup_training_label = training_input, training_label

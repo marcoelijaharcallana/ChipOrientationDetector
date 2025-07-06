@@ -11,12 +11,12 @@ from definitions import *
 import argparse
 
 parser = argparse.ArgumentParser("AI")
-parser.add_argument("ai")
-arguments = parser.parse_args() 
+parser.add_argument("bundleName")
+bundleName = parser.parse_args().bundleName 
 
-settings = load_settings()
+settings = load_settings(bundleName)
 
-model = keras.models.load_model(arguments.ai)
+model = keras.models.load_model(f"bundles/{bundleName}/model.keras")
 if model is None:
     print("Model not Found!")
     exit(1)
