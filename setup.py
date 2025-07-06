@@ -112,7 +112,7 @@ while True:
 
     cv.putText(image, f"Brightness: {brightness}", (100,50), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1)
     cv.putText(image, f"Threshold: {threshold}", (100,100), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1)
-    cv.putText(image, f"Verdict: {("None", "Detected")[decision]}", (100,150), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1)
+    #cv.putText(image, f"Verdict: {("None", "Detected")[decision]}", (100,150), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1)
 
     image = add_overlay(image, settings)
     
