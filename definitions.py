@@ -22,3 +22,5 @@ class Error:
     CAMERA_ERROR_READ = 2 
     JSON_NOT_FOUND = 3
     JSON_INVALID_FORMAT = 4
+
+textColor = (255, 0, 0)

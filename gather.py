@@ -56,7 +56,7 @@ while camera.isOpened():
     image = split_channel(image)
     image = add_overlay(image, settings)
 
-    image = cv.putText(image, f"Pass: {ps} Fail: {fl} None: {nn}", (100,100), cv.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0), 1)
+    image = cv.putText(image, f"Pass: {ps} Fail: {fl} None: {nn}", (100,100), cv.FONT_HERSHEY_COMPLEX, 0.5, textColor, 1)
 
     cv.imshow("Gather Data", image)
     cv.imshow("Main Image", main_image)
